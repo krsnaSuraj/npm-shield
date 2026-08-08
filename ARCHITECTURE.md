@@ -309,9 +309,9 @@ Run: `python -m pytest tests/ -v`
 
 **v0.1.0** — Production release (audited, hardened, GitHub-verified).
 - Full detection engine (7 scan stages + system scan)
-- Verified IOC data (416 packages, 1,137 version entries, 3 file hashes, content markers)
+- Verified IOC data (416 packages, 1,123 version entries, 3 file hashes, content markers)
 - Cross-platform (Linux/macOS/Windows) — paths, case, subprocess, terminal
-- **169 passing tests** (incl. 63 edge-case + security-researcher suites)
+- **220 passing tests** (incl. 63 edge-case + security-researcher suites)
 - Multi-persona deep audit verified: Security Researcher, Incident Responder, Package Maintainer, SOC Analyst, End User
 - Security hardening: npm alias resolution (4 forms), pnpm peer-dep stripping, corrupted lockfile recovery (ijson streaming parser + head+tail fallback), symlink traversal protection (`followlinks=False`), dead branch cleanup
 - Packaging: data ships in the wheel, fresh `pip install` verified

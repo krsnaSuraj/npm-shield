@@ -33,4 +33,4 @@ All notable changes to this project will be documented in this file.
 - Lockfile corrupted-JSON recovery.
 - Content marker matching fix.
 - Root-level JS detection.
-- 169+ tests, packaging verified, live E2E scan.
+- 220+ tests, packaging verified, live E2E scan.

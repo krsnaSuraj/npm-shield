@@ -1,4 +1,4 @@
-# 🛡️ npm-shield
+# npm-shield
 
 **Detects the Shai-Hulud / ChainDrop npm worm on developer machines, projects, CI and lockfiles.**
 
@@ -16,7 +16,7 @@ npm-shield hunts every known fingerprint:
 
 | Layer | Detection | Severity |
 |-------|-----------|----------|
-| **Poisoned packages** | 416 packages (322 exact ver + 147 org-scope wildcard) / 1,137 version entries (JFrog: 456 pkgs/2,244 versions wave ongoing) | 🔴 critical |
+| **Poisoned packages** | 416 packages (322 exact ver + 147 org-scope wildcard) / 1,123 version entries (JFrog: 456 pkgs/2,244 versions wave ongoing) | 🔴 critical |
 | **File hashes** | 3 SHA-256 signatures: `setup.mjs` loaders (A/B), `Math_Symbol.js`/`math_init.js` stage-2 harvester | 🔴 critical |
 | **Install hooks** | `"preinstall": "node setup.mjs"` in any package.json | 🔴 critical |
 | **Content markers** | Token-relay marker (`IfYouBlockThisAPIKeyItWillCrash…`), live exfil domain (`npm-cache.com`), Bun loader version (`bun-v1.3.13`), Ethereum C2 fallback markers (`thebeautifulmarchoftime` / `thebeautifulsnadsoftime`) — catches **unknown/renamed variants** | 🔴/🟡 |
@@ -125,7 +125,7 @@ Multi-persona deep audit (Security Researcher, Incident Responder, Package Maint
 
 ```
 $ pytest tests/ -q
-169 passed in 1.01s
+220 passed in 15.7s
 ```
 
 ## 📊 Example output
