@@ -1,0 +1,178 @@
+{
+  "file_hashes": [
+    {
+      "sha256": "9fc2570b7cef51c1b8df116d144d11ff4096357be7d2c4c6367cfc2509cf1bcc",
+      "size": 727680,
+      "names": [
+        "Math_Symbol.js",
+        "math_init.js"
+      ],
+      "description": "Stage-2 Bun-bundled credential harvester (10 encrypted payloads)",
+      "severity": "critical",
+      "fix": [
+        "Delete 'Math_Symbol.js' and 'math_init.js' from the project",
+        "Check package-lock.json for the hash and remove the dependency",
+        "Run 'npm ls' to find the source package, then 'npm uninstall'"
+      ]
+    },
+    {
+      "sha256": "54dc7ea54a1317cca0e890a2770630cf7fa6c97813e0cb9d2caa93012b350668",
+      "size": 29918,
+      "names": [
+        "setup.mjs"
+      ],
+      "description": "Loader A - downloads Bun runtime, always exits 0",
+      "severity": "critical",
+      "fix": [
+        "Remove 'setup.mjs' file immediately",
+        "Revoke any credentials exposed in the last 24 hours",
+        "Search for 'preinstall' hooks in package.json and remove them",
+        "Check node_modules for suspicious postinstall artifacts"
+      ]
+    },
+    {
+      "sha256": "fd3ca4007b225fdf8de7af4345a19179d5efa8c4bb9205f88cda806e5684b1eb",
+      "size": 11017,
+      "names": [
+        "setup.mjs"
+      ],
+      "description": "Loader B - community-spread variant, exits non-zero on error",
+      "severity": "critical",
+      "fix": [
+        "Delete 'setup.mjs' file",
+        "Kill any running Bun processes (check 'ps aux | grep bun')",
+        "Revoke GitHub tokens and rotate CI secrets",
+        "Re-run npm-shield after cleanup to verify removal"
+      ]
+    }
+  ],
+  "package_json_patterns": [
+    {
+      "pattern": "\\\"preinstall\\\":\\s*\\\"node\\s+setup\\.mjs\\\"",
+      "description": "Malicious preinstall hook executing setup.mjs",
+      "severity": "critical",
+      "fix": [
+        "Remove the 'preinstall' script from package.json",
+        "Delete setup.mjs if present",
+        "Run 'npm install --ignore-scripts' to proceed safely",
+        "Check node_modules/.hooks/ for other malicious hooks"
+      ]
+    }
+  ],
+  "file_name_signals": [
+    "setup.mjs",
+    "Math_Symbol.js",
+    "math_init.js"
+  ],
+  "bun_version_signal": "bun-v1.3.13",
+  "dead_drop_repo_marker": "Shai-Hulud: Here We Go Again",
+  "exfil_endpoint": "npm-cache[.]com",
+  "persistence_paths": [
+    {
+      "path": "~/.config/gh-token-monitor/",
+      "os": "linux",
+      "description": "Dead-man's switch watcher state dir (60s GitHub token poll, eval handler on revoke)",
+      "severity": "critical",
+      "fix": [
+        "KILL the watcher process FIRST: 'pkill -f gh-token-monitor'",
+        "THEN remove the directory: 'rm -rf ~/.config/gh-token-monitor/'",
+        "Rotate ALL GitHub tokens and PATs immediately",
+        "Revoke any compromised CI/CD secrets"
+      ]
+    },
+    {
+      "path": "~/Library/LaunchAgents/com.user.gh-token-monitor.plist",
+      "os": "macos",
+      "description": "LaunchAgent for gh-token-monitor dead-man's switch",
+      "severity": "critical",
+      "fix": [
+        "Unload the LaunchAgent: 'launchctl unload ~/Library/LaunchAgents/com.user.gh-token-monitor.plist'",
+        "DELETE the plist file: 'rm ~/Library/LaunchAgents/com.user.gh-token-monitor.plist'",
+        "Kill the underlying process with Activity Monitor (search: gh-token-monitor)",
+        "Revoke all exposed GitHub tokens and CI secrets"
+      ]
+    }
+  ],
+  "ide_hook_patterns": [
+    {
+      "path": ".claude/settings.json",
+      "pattern": "SessionStart",
+      "command": "node .vscode/setup.mjs",
+      "description": "Claude Code SessionStart hook executes malicious script on project open",
+      "severity": "critical",
+      "fix": [
+        "Remove the SessionStart hook from .claude/settings.json",
+        "Delete .vscode/setup.mjs and .claude/setup.mjs if present",
+        "Audit other hooks in settings.json for malicious commands",
+        "Run npm-shield scan to verify cleanup"
+      ]
+    },
+    {
+      "path": ".vscode/tasks.json",
+      "pattern": "folderOpen",
+      "command": "node .claude/setup.mjs",
+      "description": "VS Code folderOpen task executes malicious script on project open",
+      "severity": "critical",
+      "fix": [
+        "Remove the folderOpen task from .vscode/tasks.json",
+        "Delete .claude/setup.mjs and .vscode/setup.mjs if present",
+        "Review all tasks.json entries for suspicious commands",
+        "Disable VS Code auto-run of tasks.json on folder open in settings"
+      ]
+    }
+  ],
+  "campaign_window": {
+    "start": "2026-08-04T09:35:00Z",
+    "end": "2026-08-04T11:44:00Z",
+    "note": "Earliest known release: keyv@6.0.0. npm v12 blocks install scripts by default."
+  },
+  "etherhiding": {
+    "description": "Ethereum blockchain C2 — transaction payloads carry command data, no IP/domain",
+    "detection_note": "Not detectable by domain blocking; monitor for unusual contract interactions from build processes. Check wallet activity on 0xE1f2395ee43e45A1556EC6438a88c31B83493103"
+  },
+  "exfil_chain": "gzip(JSON loot) -> AES-256-GCM(random key) -> RSA-OAEP-SHA256(key wrap) -> base64",
+  "ai_tooling_targets": [
+    "Claude Code (.claude/settings.json SessionStart)",
+    "VS Code (.vscode/tasks.json folderOpen)",
+    "GitHub Copilot"
+  ],
+  "token_relay_marker": "IfYouBlockThisAPIKeyItWillCrashTheLiveProduction",
+  "dead_drop_note": "546-1300 GitHub repos with Shai-Hulud description are STAGING artifacts, not victims (O3 Security caveat)",
+  "datadog_markers": {
+    "ethereum_fallback": {
+      "marker": "thebeautifulmarchoftime",
+      "alt_accepted": "thebeautifulsnadsoftime",
+      "description": "Ethereum contract-path C2 fallback — malware searches GitHub commits for 'thebeautifulmarchoftime' (with trailing space), then accepts deliberately different marker 'thebeautifulsnadsoftime' followed by Base64-encoded domain + RSA key",
+      "severity": "critical",
+      "fix": [
+        "Search GitHub commits in your org for 'thebeautifulmarchoftime'",
+        "If found, treat as compromised — revoke all CI tokens immediately",
+        "Block outbound HTTPS to any domain found in Base64 payloads",
+        "Audit Ethereum contract interactions from build machines"
+      ],
+      "note": "The RPC hosts are mostly legitimate public infrastructure; contract path failure → GitHub commit search → Base64 domain"
+    },
+    "exfil_endpoint_behavior": {
+      "description": "Each returned domain gets HTTPS GET to port 443 on /router; only status 400/404 considered healthy; first healthy domain used for exfiltration",
+      "severity": "high",
+      "fix": [
+        "Block outbound HTTPS to npm-cache[.]com and its domain rotation IPs",
+        "Monitor for GET requests to /router endpoint on non-standard domains",
+        "Set up DNS sinkhole for known exfiltration domains"
+      ]
+    }
+  },
+  "content_marker_strings": [
+    "thebeautifulmarchoftime",
+    "thebeautifulsnadsoftime"
+  ],
+  "campaign_numbers": {
+    "jfrog": "456 packages / 2,244 versions (ongoing)",
+    "stepsecurity": "444 / 2,212",
+    "aikido": "434 / 1,381",
+    "note": "Counts diverge by observation time; signature+hash detection covers unverified variants"
+  },
+  "ethereum_c2_contract": "0xE1f2395ee43e45A1556EC6438a88c31B83493103",
+  "ethereum_c2_selector": "0x53ed5143",
+  "dead_drop_repo_note": "546-1,300 GitHub repos with Shai-Hulud description = STAGING artifacts, not victims (O3 Security)"
+}

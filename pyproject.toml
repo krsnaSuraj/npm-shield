@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "npm-shield"
+version = "0.1.0"
+description = "Defensive scanner that detects the Shai-Hulud npm worm (Chaindrop) — poisoned packages, file hashes, install/IDE hooks and persistence artifacts."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "npm-shield contributors" }]
+keywords = ["npm", "security", "supply-chain", "malware", "worm", "scanner"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+# Core has zero required dependencies; psutil is optional and only used
+# for the `system` process scan if the engine wires it in.
+dependencies = []
+
+[project.optional-dependencies]
+psutil = ["psutil>=5.9"]
+ijson = ["ijson>=3.2"]  # streaming JSON parser for >50MB lockfiles
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+npm-shield = "npm_shield.cli:main"
+
+[tool.setuptools]
+packages = ["npm_shield"]
+
+# Ship the verified IOC data inside the package so `pip install .`
+# (site-packages layout) and `pip install -e .` (repo layout) both find
+# `npm_shield/data/*.json` — see npm_shield.signatures.DATA_DIR.
+[tool.setuptools.package-data]
+npm_shield = ["data/*.json"]

@@ -1,0 +1,1 @@
+"""npm-shield test suite."""

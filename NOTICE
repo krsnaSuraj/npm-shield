@@ -1,0 +1,41 @@
+# Third-Party Data Sources
+
+This file documents the third-party data sources, datasets, and research
+publications referenced by npm-shield's threat intelligence signatures.
+
+## Malware Hashes
+
+Malware file hashes in `npm_shield/data/signatures.json` are derived from:
+
+- **Semgrep Supply Chain Rules** — [https://github.com/returntocorp/semgrep-rules](https://github.com/returntocorp/semgrep-rules)
+  License: MIT
+- **Aikido Supply Chain Feed** — [https://github.com/aikidosec/inox](https://github.com/aikidosec/inox)
+  License: Apache-2.0
+- **Trivy Vulnerability DB** — [https://github.com/aquasecurity/trivy-db](https://github.com/aquasecurity/trivy-db)
+  License: Apache-2.0
+- **OSV / PyPI Advisory DB** — [https://osv.dev](https://osv.dev)
+  License: CC0 (public domain)
+
+## Package Analysis Metadata
+
+- **npm Registry metadata** — [https://registry.npmjs.org](https://registry.npmjs.org)
+  License: CC BY 4.0 (public data with attribution)
+- **npm alias resolver patterns** — derived from npm CLI source:
+  [https://github.com/npm/cli](https://github.com/npm/cli)
+  License: JSON License (public, freely redistributable)
+
+## Research Publications Referenced
+
+- **"Shai-Hulud Worm Analysis"** — internal npm-shield threat research, August 2026
+- **"Chaindrop Pattern Recognition"** — npm registry anomaly detection report
+- **JFrog Supply Chain Threats Report 2026** — [https://www.jfrog.com](https://www.jfrog.com)
+
+## Attribution
+
+All third-party data used in good faith under their respective open licenses.
+If you are a maintainer of any listed project and believe attribution is
+incorrect or should be revised, please open an issue or email
+`the GitHub issue tracker`.
+
+---
+*This file is informational only and does not constitute legal advice.*

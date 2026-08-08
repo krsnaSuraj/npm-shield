@@ -1,0 +1,113 @@
+{
+  "campaign": "Shai-Hulud / ChainDrop npm worm",
+  "date": "2026-08-04",
+  "window": "09:35-11:44 UTC",
+  "sources": [
+    "https://semgrep.dev/blog/2026/its-not-npm-ver-yet-npm-worm-chaindrop-hits-400-packages-including-jaredwray-servicetitan-ornikar-qlik-and-nebulajs/",
+    "https://www.aikido.dev/blog/keyv-and-friends-compromised-in-npm-supply-chain-attack",
+    "https://safedep.io/keyv-npm-supply-chain-compromise/",
+    "https://socket.dev/blog/popular-npm-packages-in-the-keyv-and-cacheable-namespaces-compromised-in-active-supply-chain",
+    "https://github.blog/changelog/2026-07-31-restricting-npm-bypass-2fa-granular-access-tokens/",
+    "https://docs.npmjs.com/trusted-publishers",
+    "https://securitylabs.datadoghq.com/articles/npm-worm-compromises-popular-npm-packages/",
+    "https://research.jfrog.com/post/shai-hulud-is-back-august/",
+    "https://thehackernews.com/2026/08/keyv-linked-npm-worm-poisons-hundreds.html",
+    "https://www.bleepingcomputer.com/news/security/massive-chaindrop-npm-supply-chain-attack-infects-hundreds-of-packages/"
+  ],
+  "verified": true,
+  "note": "Hashes cross-verified identical between Semgrep and Aikido reports. Registry live-checked: keyv@6.0.0 removed (latest=5.6.0 clean), @qlik/browserslist-config@3.0.2 removed.",
+  "updated": "2026-08-05",
+  "scale": {
+    "jfrog_latest": "456 packages, 2,244 versions (5 Aug \u2014 wave ongoing)",
+    "stepsecurity": "444 packages, 2,212 versions (4 Aug 18:10 UTC)",
+    "aikido": "434 packages, 1,381 versions (4 Aug 13:37 CEST)",
+    "safedep": "400+ packages, twelve organisations",
+    "verified_carriers": "11 full worm carriers (keyv, flat-cache, file-entry-cache, cacheable family, ecto)",
+    "our_data": "322 independently-verified packages, 975 exact versions (only confirmed pairs)",
+    "still_active": true,
+    "note": "Registry remediation complete for 11 carriers (all 404), but worm continues republishing via stolen tokens per JFrog"
+  },
+  "new_techniques": [
+    "EtherHiding \u2014 Ethereum blockchain C2 (no IP/domain to block)",
+    "Analyst-proof exfiltration: gzip -> AES-256-GCM random key -> RSA-OAEP-SHA256 -> base64",
+    "GitHub Copilot workflow targeting (in addition to Claude Code + VS Code hooks)",
+    "Re-obfuscated dropper variants across second-wave namespaces"
+  ],
+  "timeline": {
+    "09:23:50": "keyv cover test removed (commit f97eabc)",
+    "09:35:00": "keyv@6.0.0 published via OIDC trusted publishing (153.7M weekly)",
+    "09:38:13": "First second-wave republish @thiennq/docs-viewer@1.6.2",
+    "09:38-13:20": "Automated propagation window",
+    "camouflage": "Commit d8c850c planted .claude/settings.json + .vscode/tasks.json + .claude/math_init.js"
+  },
+  "npm_official_response": {
+    "date": "2026-08-04 20:40 UTC",
+    "source": "@npmjs official announcement",
+    "action": "npm is rotating write-scoped Granular Access Tokens (GATs) that bypass 2FA as a precaution",
+    "status": "Incident now-contained (per npm)",
+    "does_not_affect": "GitHub personal access tokens",
+    "recommendations": [
+      "Upgrade npm CLI to v12+ (blocks install scripts by default)",
+      "Use Trusted Publishing (OIDC) for automated publishing",
+      "Move to staged publishing",
+      "2FA-bypass tokens lose direct publish by Jan 2027"
+    ],
+    "context": "Directly follows the ChainDrop/Shai-Hulud worm \u2014 attackers used stolen npm tokens to republish 433 packages. Restricting bypass-2FA GATs closes the credential-based attack surface the worm exploited."
+  },
+  "datadog_analysis": {
+    "source": "https://securitylabs.datadoghq.com/articles/npm-worm-compromises-popular-npm-packages/",
+    "earliest_malicious_commit": "29c773 (setup.mjs + Math_Symbol.js + preinstall) 09:02:37 UTC",
+    "hook_commits": "github-actions[bot] signed 5 commits adding .claude/.vscode hooks to v5/v4/release/main",
+    "maintainer_warning": "Account posted 'Do not merge or publish until repository and credentials are investigated' (09:08 UTC)",
+    "genuine_provenance": "SLSA provenance bound tag v6.0.0 to release.yaml via Actions run 30896232272",
+    "keyv_publish": "09:35:00.763 UTC \u2014 confirmed malicious",
+    "cacheable_family": "9 versions 10:09-10:14 UTC from commit 893f73f",
+    "ecto": "5.0.1 at 10:28:01.451 UTC from commit 983ce1a",
+    "c2_markers": [
+      "thebeautifulmarchoftime",
+      "thebeautifulsnadsoftime"
+    ],
+    "exfil": "HTTPS GET to /router on returned domains; 400/404 = healthy; first healthy = exfil target"
+  },
+  "registry_state": {
+    "verified_date": "2026-08-05",
+    "verification": "Live registry API + tarball HEAD + npm view \u2014 ALL poisoned versions 404",
+    "keyv_6.0.0": "removed (tarball 404)",
+    "flat_cache_6.1.24": "removed (tarball 404)",
+    "file_entry_cache_11.1.6": "removed (tarball 404)",
+    "cacheable_request_13.0.20": "removed (tarball 404)",
+    "cache_manager_7.2.10": "removed (tarball 404)",
+    "ecto_5.0.1": "removed (tarball 404)",
+    "@cacheable_family": "all removed (tarball 404)",
+    "latest_versions_clean": true,
+    "post_aug4_malicious_publishes": "none detected at verification time",
+    "note": "Cleanup done but campaign active \u2014 new republishes possible"
+  },
+  "cross_verified_scale": {
+    "date": "2026-08-05",
+    "converged_package_count": "444 package names (StepSecurity 444/2,212 + SafeDep 444/2,234 agree exactly)",
+    "aikido_868": "name-inclusive count \u2014 do NOT combine with 444 (THN)",
+    "version_counts": "2,212 (StepSecurity) / 2,234 (SafeDep) / 1,557 (Semgrep) / 1,381 (Aikido) \u2014 methodology differences",
+    "our_data": "423 packages, 1,076 version entries (exact versions + org-scope '*' for servicetitan/umacloud)",
+    "claim_1300_is_conflation": "BC/forgeeks '1,300 packages' = dead-drop repo count (546-1,300 staging repos), NOT victims (O3 Security)"
+  },
+  "containment_status": {
+    "verdict": "NOT contained \u2014 no official 'resolved' statement as of 5 Aug",
+    "publishing_burst_ended": "~13:18 UTC Aug 4 (last org @umacloud)",
+    "remediation_progress": "all 11 carriers reverted/unpublished (404 verified); @servicetitan/* + @nebula.js/* removed wholesale",
+    "no_poisoned_publishes_after": "Aug 4 13:18 UTC (SafeDep)",
+    "platform_mitigations": [
+      "npm v12 GA blocks unapproved lifecycle scripts by default",
+      "Jul 31: bypass-2FA GATs blocked from account/org/package management (2FA challenge required)",
+      "Jan 2027: bypass-2FA tokens lose direct publish \u2014 until then, worm's second-wave mechanism remains possible"
+    ],
+    "caveat": "direct publishing with bypass-2FA tokens remains possible until Jan 2027 (the worm's second-wave method)"
+  },
+  "ethereum_c2": {
+    "contract": "0xE1f2395ee43e45A1556EC6438a88c31B83493103",
+    "selector": "0x53ed5143",
+    "rpc_endpoints": "73-75",
+    "exfil": "HTTPS GET /router on contract-resolved domains; 400/404 = healthy; first healthy = exfil target",
+    "framing_conflict": "SafeDep says 'no C2 host' (GitHub dead-drop framing); Datadog/StepSecurity/Microsoft say Ethereum contract-resolved HTTPS primary \u2014 reconcilable: no static host"
+  }
+}
